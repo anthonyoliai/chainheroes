@@ -16,6 +16,7 @@ type hero struct {
 	name       string
 	mood       Mood
 	status     Status
+	expedition *game.Expedition
 }
 
 type Mood uint64
@@ -38,15 +39,35 @@ const (
 )
 
 func New(name string) hero {
-	return hero{name: name}
+	return hero{name: name, level: 1}
 }
 
 func (h *hero) Train(expedition game.Expedition) {
 	h.status = Training
-	fmt.Printf("Hero is training until %v", time.Now().Add(expedition.Duration()))
+	h.expedition = &expedition
 	<-time.After(expedition.Duration())
+	h.handleLevelUp(expedition.Experience())
 	h.status = Idle
-	h.experience += expedition.Experience()
+	h.expedition = nil
+}
+
+func (h *hero) handleLevelUp(experience float64) {
+	remainingExp := experience
+
+	for {
+		requiredExp := float64(h.level*h.level) - h.experience
+
+		if requiredExp <= remainingExp {
+			h.level++
+			h.experience = 0
+			remainingExp = remainingExp - requiredExp
+			fmt.Println(remainingExp)
+			continue
+		}
+		h.experience += remainingExp
+		return
+	}
+
 }
 
 func (h *hero) CurrentStatus() string {
@@ -72,4 +93,11 @@ func (h *hero) Level() uint64 {
 
 func (h *hero) Experience() float64 {
 	return h.experience
+}
+
+func (h *hero) Expedition() string {
+	if h.expedition == nil {
+		return ""
+	}
+	return h.expedition.Name()
 }
