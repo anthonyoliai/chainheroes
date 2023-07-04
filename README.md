@@ -23,7 +23,7 @@ To explore the source code ;
 Clone the repository:
 
 ```bash
-git clone https://github.com/chain-heroes/chain-heroes.git
+git clone https://github.com/anthonyoliai/chainheroes.git
 ```
 
 ## License
