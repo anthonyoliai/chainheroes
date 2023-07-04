@@ -13,7 +13,7 @@ import (
 
 type Game struct{}
 
-var hero = character.New("Tony soyboy")
+var hero = character.New("Adventurer X")
 var train = 0
 
 func training() {
@@ -47,7 +47,7 @@ func (g *Game) Layout(outsideWidth, outsideHeight int) (screenWidth, screenHeigh
 
 func main() {
 	ebiten.SetWindowSize(640, 480)
-	ebiten.SetWindowTitle("Hello, World!")
+	ebiten.SetWindowTitle("Chain Heroes")
 	go training()
 
 	if err := ebiten.RunGame(&Game{}); err != nil {
